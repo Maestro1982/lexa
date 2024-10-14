@@ -24,8 +24,10 @@ import {
 } from '@/components/ui/form';
 
 import { registerSchema } from '@/lib/validation';
+import { useRegister } from '@/features/auth/api/use-register';
 
 export const SignUpCard = () => {
+  const { mutate } = useRegister();
   const form = useForm<z.infer<typeof registerSchema>>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
@@ -36,7 +38,7 @@ export const SignUpCard = () => {
   });
 
   const onSubmit = (values: z.infer<typeof registerSchema>) => {
-    console.log(values);
+    mutate({ json: values });
   };
   return (
     <Card className='w-full h-full md:w-[487px] border-none shadow-none'>

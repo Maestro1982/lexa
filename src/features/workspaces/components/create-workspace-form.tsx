@@ -23,6 +23,8 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { DottedSeparator } from '@/components/dotted-separator';
 
 import { createWorkspaceSchema } from '@/lib/validation';
+import { cn } from '@/lib/utils';
+
 import { useCreateWorkspace } from '@/features/workspaces/api/use-create-workspace';
 
 interface CreateWorkspaceFormProps {
@@ -155,6 +157,7 @@ export const CreateWorkspaceForm = ({ onCancel }: CreateWorkspaceFormProps) => {
                 variant='secondary'
                 onClick={onCancel}
                 disabled={isPending}
+                className={cn(!onCancel && 'invisible')}
               >
                 Cancel
               </Button>

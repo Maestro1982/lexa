@@ -7,6 +7,7 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { ImageIcon } from 'lucide-react';
+import { toast } from 'sonner';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
@@ -26,6 +27,7 @@ import { createWorkspaceSchema } from '@/lib/validation';
 import { cn } from '@/lib/utils';
 
 import { useCreateWorkspace } from '@/features/workspaces/api/use-create-workspace';
+import { MAX_FILE_SIZE } from '@/constants';
 
 interface CreateWorkspaceFormProps {
   onCancel?: () => void;
@@ -63,6 +65,15 @@ export const CreateWorkspaceForm = ({ onCancel }: CreateWorkspaceFormProps) => {
     const file = e.target.files?.[0];
 
     if (file) {
+      // Check if file size is greater than 1MB (1MB = 1,048,576 bytes)
+      if (file.size > MAX_FILE_SIZE) {
+        toast.error(
+          'Image size cannot exceed 1MB. Please upload a smaller image.'
+        );
+        return;
+      }
+
+      // If file size is valid, set it to form state
       form.setValue('image', file);
     }
   };

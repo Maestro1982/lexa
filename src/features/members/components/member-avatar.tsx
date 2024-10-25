@@ -5,7 +5,7 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 interface MemberAvatarProps {
   name: string;
   className?: string;
-  fallbackClassName: string;
+  fallbackClassName?: string;
 }
 
 export const MemberAvatar = ({

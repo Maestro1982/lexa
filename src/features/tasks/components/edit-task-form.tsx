@@ -29,36 +29,41 @@ import { DatePicker } from '@/components/date-picker';
 import { createTaskSchema } from '@/lib/validation';
 import { cn } from '@/lib/utils';
 
-import { useWorkspaceId } from '@/features/workspaces/hooks/use-workspace-id';
-import { useCreateTask } from '@/features/tasks/api/use-create-task';
+import { useUpdateTask } from '@/features/tasks/api/use-update-task';
 import { MemberAvatar } from '@/features/members/components/member-avatar';
-import { TaskStatus } from '@/features/tasks/types';
+import { Task, TaskStatus } from '@/features/tasks/types';
 import { ProjectAvatar } from '@/features/projects/components/project-avatar';
 
-interface CreateTaskFormProps {
+interface EditTaskFormProps {
   onCancel?: () => void;
   projectOptions: { id: string; name: string; imageUrl: string }[];
   memberOptions: { id: string; name: string }[];
+  initialValues: Task;
 }
 
-export const CreateTaskForm = ({
+export const EditTaskForm = ({
   onCancel,
   projectOptions,
   memberOptions,
-}: CreateTaskFormProps) => {
-  const workspaceId = useWorkspaceId();
-  const { mutate, isPending } = useCreateTask();
+  initialValues,
+}: EditTaskFormProps) => {
+  const { mutate, isPending } = useUpdateTask();
 
   const form = useForm<z.infer<typeof createTaskSchema>>({
-    resolver: zodResolver(createTaskSchema.omit({ workspaceId: true })),
+    resolver: zodResolver(
+      createTaskSchema.omit({ workspaceId: true, description: true })
+    ),
     defaultValues: {
-      workspaceId,
+      ...initialValues,
+      dueDate: initialValues.dueDate
+        ? new Date(initialValues.dueDate)
+        : undefined,
     },
   });
 
   const onSubmit = (values: z.infer<typeof createTaskSchema>) => {
     mutate(
-      { json: { ...values, workspaceId } },
+      { json: values, param: { taskId: initialValues.$id } },
       {
         onSuccess: () => {
           form.reset();
@@ -71,7 +76,7 @@ export const CreateTaskForm = ({
   return (
     <Card className='w-full h-full border-none shadow-none'>
       <CardHeader className='flex p-7'>
-        <CardTitle className='text-xl font-bold'>Create a new task</CardTitle>
+        <CardTitle className='text-xl font-bold'>Edit a task</CardTitle>
       </CardHeader>
       <div className='px-7'>
         <DottedSeparator />
@@ -220,7 +225,7 @@ export const CreateTaskForm = ({
                 Cancel
               </Button>
               <Button type='submit' size='lg' disabled={isPending}>
-                Create Task
+                Save Changes
               </Button>
             </div>
           </form>

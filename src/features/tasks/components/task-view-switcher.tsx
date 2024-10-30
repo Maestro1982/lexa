@@ -14,14 +14,17 @@ import { columns } from '@/features/tasks/components/columns';
 import { DataKanban } from '@/features/tasks/components/data-kanban';
 
 import { useCreateTaskModal } from '@/features/tasks/hooks/use-create-task-modal';
-import { useGetTasks } from '@/features/tasks/api/use-get-tasks';
 import { useWorkspaceId } from '@/features/workspaces/hooks/use-workspace-id';
 import { useTaskFilters } from '@/features/tasks/hooks/use-task-filters';
+import { useGetTasks } from '@/features/tasks/api/use-get-tasks';
+import { useBulkUpdateTasks } from '@/features/tasks/api/use-bulk-update-tasks';
 import { TaskStatus } from '@/features/tasks/types';
 
 export const TaskViewSwitcher = () => {
   const [{ projectId, status, assigneeId, dueDate }] = useTaskFilters();
   const { open } = useCreateTaskModal();
+  const { mutate: bulkUpdate } = useBulkUpdateTasks();
+
   const [view, setView] = useQueryState('task-view', {
     defaultValue: 'table',
   });
@@ -36,9 +39,9 @@ export const TaskViewSwitcher = () => {
 
   const onKanbanChange = useCallback(
     (tasks: { $id: string; status: TaskStatus; position: number }[]) => {
-      console.log(tasks);
+      bulkUpdate({ json: { tasks } });
     },
-    []
+    [bulkUpdate]
   );
 
   return (

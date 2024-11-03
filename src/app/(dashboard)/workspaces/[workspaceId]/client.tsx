@@ -196,10 +196,10 @@ export const MembersList = ({ data, total }: MembersListProps) => {
                 <CardContent className='flex flex-col items-center p-3 gap-x-2'>
                   <MemberAvatar className='size-12' name={member.name} />
                   <div className='flex flex-col items-center overflow-hidden'>
-                    <p className='text-lg font-medium line-clamp-1'>
+                    <p className='text-lg font-medium truncate'>
                       {member.name}
                     </p>
-                    <p className='text-sm text-muted-foreground line-clamp-1'>
+                    <p className='text-sm text-muted-foreground truncate'>
                       {member.email}
                     </p>
                   </div>

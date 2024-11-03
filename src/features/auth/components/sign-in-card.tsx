@@ -7,7 +7,13 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
+import { signUpWithGithub, signUpWithGoogle } from '@/lib/oauth';
+import { loginSchema } from '@/lib/validation';
+
+import { useLogin } from '@/features/auth/api/use-login';
+
 import { DottedSeparator } from '@/components/dotted-separator';
+
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -18,9 +24,6 @@ import {
   FormItem,
   FormMessage,
 } from '@/components/ui/form';
-
-import { loginSchema } from '@/lib/validation';
-import { useLogin } from '@/features/auth/api/use-login';
 
 export const SignInCard = () => {
   const { mutate, isPending } = useLogin();
@@ -90,6 +93,7 @@ export const SignInCard = () => {
         <DottedSeparator />
         <CardContent className='flex flex-col p-7 gap-y-4'>
           <Button
+            onClick={() => signUpWithGoogle()}
             disabled={isPending}
             variant='secondary'
             size='lg'
@@ -99,6 +103,7 @@ export const SignInCard = () => {
             Login with Google
           </Button>
           <Button
+            onClick={() => signUpWithGithub()}
             disabled={isPending}
             variant='secondary'
             size='lg'

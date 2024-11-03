@@ -27,6 +27,7 @@ import {
 
 import { registerSchema } from '@/lib/validation';
 import { useRegister } from '@/features/auth/api/use-register';
+import { signUpWithGithub, signUpWithGoogle } from '@/lib/oauth';
 
 export const SignUpCard = () => {
   const { mutate, isPending } = useRegister();
@@ -123,6 +124,7 @@ export const SignUpCard = () => {
         <DottedSeparator />
         <CardContent className='flex flex-col p-7 gap-y-4'>
           <Button
+            onClick={() => signUpWithGoogle()}
             disabled={isPending}
             variant='secondary'
             size='lg'
@@ -132,6 +134,7 @@ export const SignUpCard = () => {
             Login with Google
           </Button>
           <Button
+            onClick={() => signUpWithGithub()}
             disabled={isPending}
             variant='secondary'
             size='lg'

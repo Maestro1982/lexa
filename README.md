@@ -32,7 +32,7 @@
 # App Images
 
 ![sign-in](image.png)
-![sign-up]](image-1.png)
+![sign-up](image-1.png)
 ![home](image-2.png)
 ![my-tasks](image-3.png)
 ![table](image-11.png)

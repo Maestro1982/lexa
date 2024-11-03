@@ -5,9 +5,11 @@ import { Query } from 'node-appwrite';
 
 import { sessionMiddleware } from '@/lib/session-middleware';
 import { createAdminClient } from '@/lib/appwrite';
+
 import { getMember } from '@/features/members/utils';
+import { Member, MemberRole } from '@/features/members/types';
+
 import { DATABASE_ID, MEMBERS_ID } from '@/constants';
-import { MemberRole } from '@/features/members/types';
 
 const app = new Hono()
   .get(
@@ -30,9 +32,11 @@ const app = new Hono()
         return c.json({ error: 'Unauthorized' }, 401);
       }
 
-      const members = await databases.listDocuments(DATABASE_ID, MEMBERS_ID, [
-        Query.equal('workspaceId', workspaceId),
-      ]);
+      const members = await databases.listDocuments<Member>(
+        DATABASE_ID,
+        MEMBERS_ID,
+        [Query.equal('workspaceId', workspaceId)]
+      );
 
       const populatedMembers = await Promise.all(
         members.documents.map(async (member) => {

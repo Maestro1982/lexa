@@ -17,8 +17,11 @@ import { DataCalendar } from '@/features/tasks/components/data-calendar';
 import { useCreateTaskModal } from '@/features/tasks/hooks/use-create-task-modal';
 import { useWorkspaceId } from '@/features/workspaces/hooks/use-workspace-id';
 import { useTaskFilters } from '@/features/tasks/hooks/use-task-filters';
+import { useProjectId } from '@/features/projects/hooks/use-project-id';
+
 import { useGetTasks } from '@/features/tasks/api/use-get-tasks';
 import { useBulkUpdateTasks } from '@/features/tasks/api/use-bulk-update-tasks';
+
 import { TaskStatus } from '@/features/tasks/types';
 
 interface TaskViewSwitcherProps {
@@ -36,9 +39,11 @@ export const TaskViewSwitcher = ({
     defaultValue: 'table',
   });
   const workspaceId = useWorkspaceId();
+  const paramDefaultProjectId = useProjectId();
+
   const { data: tasks, isLoading: isLoadingTasks } = useGetTasks({
     workspaceId,
-    projectId,
+    projectId: paramDefaultProjectId || projectId,
     assigneeId,
     status,
     dueDate,

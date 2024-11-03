@@ -1,10 +1,10 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useRouter } from 'next/navigation';
 
 import { cn } from '@/lib/utils';
 
 import { Project } from '@/features/projects/types';
 import { TaskStatus } from '@/features/tasks/types';
+import { Member } from '@/features/members/types';
 
 import { useWorkspaceId } from '@/features/workspaces/hooks/use-workspace-id';
 
@@ -14,7 +14,7 @@ import { ProjectAvatar } from '@/features/projects/components/project-avatar';
 interface EventCardProps {
   id: string;
   title: string;
-  assignee: any;
+  assignee: Member;
   project: Project;
   status: TaskStatus;
 }
